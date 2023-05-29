@@ -58,17 +58,17 @@ export default function SeatsPage() {
 
             <FormContainer>
                 Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
+                <input placeholder="Digite seu nome..." data-test="client-name" />
 
                 CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
+                <input placeholder="Digite seu CPF..." data-test="client-cpf" />
 
-                <button>Reservar Assento(s)</button>
+                <button data-test="book-seat-btn">Reservar Assento(s)</button>
             </FormContainer>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
-                    <img src={seats.movie.posterURL} alt="poster" />
+                    <img src={seats.movie.posterURL} alt={seats.movie.title} />
                 </div>
                 <div>
                     <p>{seats.movie.title}</p>
