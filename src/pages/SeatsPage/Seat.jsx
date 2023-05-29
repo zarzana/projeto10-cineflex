@@ -22,7 +22,7 @@ export default function Seat({ seat, selectedSeats, setSelectedSeats }) {
     }
 
     return (
-        <SeatItem key={seat.id} onClick={clickHandler} currentSeatState={currentSeatState}>
+        <SeatItem key={seat.id} onClick={clickHandler} currentSeatState={currentSeatState} data-test="seat">
             {String(seat.name).padStart(2, '0')}
         </SeatItem>
     )
