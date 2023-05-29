@@ -1,31 +1,43 @@
 import styled from "styled-components"
+import { Link } from "react-router-dom"
 
-export default function SuccessPage() {
+export default function SuccessPage({ movieInfo, setMovieInfo, selectedSeats, setSelectedSeats, userName, setuserName, cpf, setCpf }) {
+
+    var seats = [], i = -1;
+    while ((i = selectedSeats.indexOf(1, i + 1)) != -1) { seats.push(i) }
+    for (let i = 0; i < seats.length; i++) { seats[i] += 1 }
+
+    const resetData = () => {
+        setMovieInfo([]);
+        setSelectedSeats([]);
+        setuserName('');
+        setCpf('');
+    }
 
     return (
         <PageContainer>
             <h1>Pedido feito <br /> com sucesso!</h1>
 
-            <TextContainer>
+            <TextContainer data-test="movie-info">
                 <strong><p>Filme e sessão</p></strong>
-                <p>Tudo em todo lugar ao mesmo tempo</p>
-                <p>03/03/2023 - 14:00</p>
+                <p>{movieInfo.movie.title}</p>
+                <p>{movieInfo.day.date} - {movieInfo.name}</p>
             </TextContainer>
 
-            <TextContainer>
+            <TextContainer data-test="seats-info">
                 <strong><p>Ingressos</p></strong>
-                <p>Assento 01</p>
-                <p>Assento 02</p>
-                <p>Assento 03</p>
+                {seats.map(seat => (<p key={seat}>Assento {String(seat).padStart(2, '0')}</p>))}
             </TextContainer>
 
-            <TextContainer>
+            <TextContainer data-test="client-info">
                 <strong><p>Comprador</p></strong>
-                <p>Nome: Letícia Chijo</p>
-                <p>CPF: 123.456.789-10</p>
+                <p>{userName}</p>
+                <p>CPF: {cpf}</p>
             </TextContainer>
 
-            <button>Voltar para Home</button>
+            <Link to={'/'}>
+                <button data-test="go-home-btn" onClick={resetData}>Voltar para Home</button>
+            </Link>
         </PageContainer>
     )
 }

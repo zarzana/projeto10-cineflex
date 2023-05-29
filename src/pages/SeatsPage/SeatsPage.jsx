@@ -1,21 +1,18 @@
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import styled from "styled-components"
 import Seat from './Seat';
 
-export default function SeatsPage() {
+export default function SeatsPage({ movieInfo, setMovieInfo, selectedSeats, setSelectedSeats, userName, setuserName, cpf, setCpf }) {
 
     const { idSessao } = useParams();
-
-    const [seats, setSeats] = useState([])
-    const [selectedSeats, setSelectedSeats] = useState(Array(50).fill(0))
 
     const getSeats = () => {
         const URL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`;
         const promise = axios.get(URL);
         promise.then((response) => {
-            setSeats(response.data);
+            setMovieInfo(response.data);
             let updatedSelectedSeats = [];
             response.data.seats.forEach(seat => {
                 if (seat.isAvailable === true) { updatedSelectedSeats.push(0) }
@@ -28,14 +25,14 @@ export default function SeatsPage() {
 
     useEffect(getSeats, [])
 
-    if (seats.seats === undefined) { return; }  // stops execution
+    if (movieInfo.seats === undefined) { return; }  // stops execution
 
     return (
         <PageContainer>
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                {seats.seats.map(seat => (
+                {movieInfo.seats.map(seat => (
                     <Seat key={seat.id} seat={seat}
                         selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} />
                 ))}
@@ -58,21 +55,23 @@ export default function SeatsPage() {
 
             <FormContainer>
                 Nome do Comprador:
-                <input placeholder="Digite seu nome..." data-test="client-name" />
+                <input placeholder="Digite seu nome..." value={userName} onChange={e => setuserName(e.target.value)} data-test="client-name" />
 
                 CPF do Comprador:
-                <input placeholder="Digite seu CPF..." data-test="client-cpf" />
+                <input placeholder="Digite seu CPF..." value={cpf} onChange={e => setCpf(e.target.value)} data-test="client-cpf" />
 
-                <button data-test="book-seat-btn">Reservar Assento(s)</button>
+                <Link to={"/sucesso"}>
+                    <button data-test="book-seat-btn">Reservar Assento(s)</button>
+                </Link>
             </FormContainer>
 
             <FooterContainer data-test="footer">
                 <div>
-                    <img src={seats.movie.posterURL} alt={seats.movie.title} />
+                    <img src={movieInfo.movie.posterURL} alt={movieInfo.movie.title} />
                 </div>
                 <div>
-                    <p>{seats.movie.title}</p>
-                    <p>{seats.day.weekday} - {seats.name}</p>
+                    <p>{movieInfo.movie.title}</p>
+                    <p>{movieInfo.day.weekday} - {movieInfo.name}</p>
                 </div>
             </FooterContainer>
 

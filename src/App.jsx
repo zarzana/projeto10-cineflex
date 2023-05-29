@@ -5,26 +5,40 @@ import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
+import { useState } from 'react';
 
 export default function App() {
 
     axios.defaults.headers.common['Authorization'] = 'Fxjk1r6zE4PiUsz1zfhA34GZ';
 
+    const [movieInfo, setMovieInfo] = useState([]);
+    const [selectedSeats, setSelectedSeats] = useState([]);
+    const [userName, setuserName] = useState('');
+    const [cpf, setCpf] = useState('');
+
     return (
-            <BrowserRouter>
+        <BrowserRouter>
 
-                <NavContainer>CINEFLEX</NavContainer>
+            <NavContainer>CINEFLEX</NavContainer>
 
-                <Routes>
+            <Routes>
 
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/sessoes/:idFilme" element={<SessionsPage />} />
-                    <Route path="/assentos/:idSessao" element={<SeatsPage />} />
-                    {/* <Route path="/sucesso" element={<SuccessPage />} /> */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/sessoes/:idFilme" element={<SessionsPage />} />
+                <Route path="/assentos/:idSessao" element={<SeatsPage
+                    movieInfo={movieInfo} setMovieInfo={setMovieInfo}
+                    selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats}
+                    userName={userName} setuserName={setuserName}
+                    cpf={cpf} setCpf={setCpf} />} />
+                <Route path="/sucesso" element={<SuccessPage
+                    movieInfo={movieInfo} setMovieInfo={setMovieInfo}
+                    selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats}
+                    userName={userName} setuserName={setuserName}
+                    cpf={cpf} setCpf={setCpf} />} />
 
-                </Routes>
+            </Routes>
 
-            </BrowserRouter>
+        </BrowserRouter>
     )
 }
 
