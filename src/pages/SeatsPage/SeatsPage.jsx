@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import styled from "styled-components"
 import Seat from './Seat';
@@ -7,6 +7,7 @@ import Seat from './Seat';
 export default function SeatsPage({ movieInfo, setMovieInfo, selectedSeats, setSelectedSeats, userName, setuserName, cpf, setCpf }) {
 
     const { idSessao } = useParams();
+    const navigate = useNavigate()
 
     const getSeats = () => {
         const URL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`;
@@ -24,6 +25,24 @@ export default function SeatsPage({ movieInfo, setMovieInfo, selectedSeats, setS
     }
 
     useEffect(getSeats, [])
+
+    const submitData = (e) => {
+
+        e.preventDefault();
+
+        var seatIds = [], i = -1;
+        while ((i = selectedSeats.indexOf(1, i + 1)) != -1) { seatIds.push(i) }
+        for (let i = 0; i < seatIds.length; i++) { seatIds[i] = movieInfo.seats[seatIds[i]]['id'] }
+
+        const request = axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many", {
+            'ids': seatIds,
+            'name': userName,
+            'cpf': cpf
+        })
+
+        request.then(() => navigate("/sucesso")) 
+
+    }
 
     if (movieInfo.seats === undefined) { return; }  // stops execution
 
@@ -54,15 +73,15 @@ export default function SeatsPage({ movieInfo, setMovieInfo, selectedSeats, setS
             </CaptionContainer>
 
             <FormContainer>
-                Nome do Comprador:
-                <input placeholder="Digite seu nome..." value={userName} onChange={e => setuserName(e.target.value)} data-test="client-name" />
 
-                CPF do Comprador:
-                <input placeholder="Digite seu CPF..." value={cpf} onChange={e => setCpf(e.target.value)} data-test="client-cpf" />
+                <form onSubmit={submitData}>
+                    Nome do Comprador:
+                    <input type="text" value={userName} onChange={e => setuserName(e.target.value)} data-test="client-name" />
+                    CPF do Comprador:
+                    <input type="number" value={cpf} onChange={e => setCpf(e.target.value)} data-test="client-cpf" />
+                    <button type="submit" data-test="book-seat-btn">Reservar Assento(s)</button>
+                </form>
 
-                <Link to={"/sucesso"}>
-                    <button data-test="book-seat-btn">Reservar Assento(s)</button>
-                </Link>
             </FormContainer>
 
             <FooterContainer data-test="footer">
