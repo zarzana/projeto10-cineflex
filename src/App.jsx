@@ -11,20 +11,20 @@ export default function App() {
     axios.defaults.headers.common['Authorization'] = 'Fxjk1r6zE4PiUsz1zfhA34GZ';
 
     return (
-        <>
-            <NavContainer>CINEFLEX</NavContainer>
-            
             <BrowserRouter>
+
+                <NavContainer>CINEFLEX</NavContainer>
+
                 <Routes>
 
                     <Route path="/" element={<HomePage />} />
-                    {/* <Route path="/sessoes/:idFilme" element={<SeatsPage />} /> */}
-                    {/* <Route path="/assentos/:idSessao" element={<SessionsPage />} /> */}
+                    <Route path="/sessoes/:idFilme" element={<SessionsPage />} />
+                    {/* <Route path="/assentos/:idSessao" element={<SeatsPage />} /> */}
                     {/* <Route path="/sucesso" element={<SuccessPage />} /> */}
-                    
+
                 </Routes>
+
             </BrowserRouter>
-        </>
     )
 }
 

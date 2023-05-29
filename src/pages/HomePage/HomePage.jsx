@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import styled from "styled-components";
 import MoviePoster from './MoviePoster';
+import { Link } from "react-router-dom"
 
 export default function HomePage() {
 
@@ -22,7 +23,11 @@ export default function HomePage() {
 
             <ListContainer>
 
-                {movies.map(movie => (<MoviePoster key={movie.id} src={movie.posterURL} alt={movie.title} />))}
+                {movies.map(movie => (
+                    <Link key={movie.id} to={`/sessoes/${movie.id}`}>
+                        <MoviePoster src={movie.posterURL} alt={movie.title} />
+                    </Link>
+                ))}
 
             </ListContainer>
 
