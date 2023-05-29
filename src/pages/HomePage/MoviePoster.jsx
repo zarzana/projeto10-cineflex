@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export default function MoviePoster({src, alt}) {
     return (
-        <MovieContainer>
+        <MovieContainer data-test="movie">
             <img src={src} alt={alt} />
         </MovieContainer>
     )
