@@ -27,7 +27,7 @@ export default function SessionsPage() {
             <div>
 
                 {sessions.days.map(session => (
-                    <Session session={session} key={session.id} data-test="movie-day" />
+                    <Session session={session} key={session.id} />
                 ))}
 
             </div>
